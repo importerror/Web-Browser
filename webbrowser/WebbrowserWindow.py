@@ -1,0 +1,41 @@
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# This file is in the public domain
+### END LICENSE
+
+import gettext
+from gettext import gettext as _
+gettext.textdomain('webbrowser')
+
+from gi.repository import Gtk,WebKit # pylint: disable=E0611
+import logging
+logger = logging.getLogger('webbrowser')
+
+from webbrowser_lib import Window
+from webbrowser.AboutWebbrowserDialog import AboutWebbrowserDialog
+from webbrowser.PreferencesWebbrowserDialog import PreferencesWebbrowserDialog  
+
+# See webbrowser_lib.Window.py for more details about how this class works
+class WebbrowserWindow(Window):
+    __gtype_name__ = "WebbrowserWindow"
+    
+    def finish_initializing(self, builder): # pylint: disable=E1002
+        """Set up the main window"""
+        super(WebbrowserWindow, self).finish_initializing(builder)
+
+        self.AboutDialog = AboutWebbrowserDialog
+        self.PreferencesDialog = PreferencesWebbrowserDialog
+
+        # Code for other initialization actions should be added here.
+        self.RefreshButton=self.builder.get_object("RefreshButton")
+        self.UrlEntry=self.builder.get_object("UrlEntry")
+        self.scrolledwindow=self.builder.get_object("scrolledwindow")
+        self.webview=WebKit.WebView()
+        self.scrolledwindow.add(self.webview)
+        self.webview.show()
+            
+    def on_RefreshButton_clicked(self,widget):
+        self.webview.reload()
+    def on_UrlEntry_activate(self,widget):
+        url=widget.get_text()
+        self.webview.open(url)

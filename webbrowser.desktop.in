@@ -1,0 +1,8 @@
+[Desktop Entry]
+_Name=Webbrowser
+_Comment=Webbrowser application
+Categories=GNOME;Utility;
+Exec=webbrowser
+Icon=webbrowser
+Terminal=false
+Type=Application
